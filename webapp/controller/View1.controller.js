@@ -1,11 +1,13 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
+    "sap/ui/model/json/JSONModel",
+    "sap/viz/ui5/format/ChartFormatter",
+    "sap/viz/ui5/controls/VizTooltip"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel) {
+    function (Controller, JSONModel, ChartFormatter, VizTooltip) {
         "use strict";
 
         return Controller.extend("com.an.dashboard.controller.View1", {
@@ -13,6 +15,7 @@ sap.ui.define([
                  this.getData();
                  this.testingData();
                  this.getHospitalData();
+                
             },
 
             getData: function(){
@@ -62,14 +65,19 @@ sap.ui.define([
                     url: "https://api.rootnet.in/covid19-in/hospitals/beds",
                     datatype:'json',
                     success: function(result){
-                       var oGraphModel = new JSONModel();
-                       oGraphModel.setData(result);
-                       oThat.getView().setModel(oGraphModel, 'hospitalModel');
+                        var oJSONModel = new sap.ui.model.json.JSONModel();
+                        var main = result.data.regional;
+                        var data = {
+                            main
+                        };
+                        var oVizFrame = oThat.getView().byId("idVizChart");
+                        var oPutawayModel = new sap.ui.model.json.JSONModel(data);
+                        oVizFrame.setModel(oPutawayModel);
                     },
                     error: function(){
 
                     }
                 });
-            }
+            }          
         });
     });

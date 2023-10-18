@@ -3,10 +3,9 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	displayBlock="true"
 	xmlns="sap.m"
-	xmlns:layout="sap.ui.layout"
 	xmlns:viz="sap.viz.ui5.controls"
-	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-	xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:vizData="sap.viz.ui5.data"
 >
 	<Page
 		id="page"
@@ -19,7 +18,7 @@
 				title="Total Cases in INDIA"
 				responsive="true"
 				class="sapUiResponsivePadding--header"
-				icon="sap-icon://choropleth-chart"				
+				icon="sap-icon://choropleth-chart"
 				numberUnit="India"
 				numberState="Warning"
 			>
@@ -102,28 +101,31 @@
 								icon="sap-icon://feed"
 								text="Testing Info"
 							>
-								<Table id="idStateTable" items="{testModel>/data}">
+								<Table
+									id="idStateTable"
+									items="{testModel>/data}"
+								>
 									<columns>
 										<Column>
-											<Text text="day"></Text>
+											<Text text="day"/>
 										</Column>
 										<Column>
-											<Text text="TotalSamplesTested"></Text>
+											<Text text="TotalSamplesTested"/>
 										</Column>
 										<Column>
-											<Text text="TotalIndividualsTested"></Text>
+											<Text text="TotalIndividualsTested"/>
 										</Column>
 										<Column>
-											<Text text="TotalPositiveCases"></Text>
+											<Text text="TotalPositiveCases"/>
 										</Column>
 									</columns>
 									<items>
-                                        <ColumnListItem >
+										<ColumnListItem>
 											<cells>
-												<Text text="{testModel>day}"></Text>
-												<Text text="{testModel>totalSamplesTested}"></Text>
-												<Text text="{testModel>totalIndividualsTested}"></Text>
-												<Text text="{testModel>totalPositiveCases}"></Text>
+												<Text text="{testModel>day}"/>
+												<Text text="{testModel>totalSamplesTested}"/>
+												<Text text="{testModel>totalIndividualsTested}"/>
+												<Text text="{testModel>totalPositiveCases}"/>
 											</cells>
 										</ColumnListItem>
 									</items>
@@ -134,35 +136,27 @@
 								icon="sap-icon://business-objects-experience"
 								text="Graphs Info"
 							>
-								<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
-									height='100%' width="100%" vizType='column'>
-									<viz:dataset>
-										<viz.data:FlattenedDataset data="{hospitalModel>/data/regional}">
-											<viz.data:dimensions>
-												<viz.data:DimensionDefinition name="State"
-													value="{hospitalModel>state}" />
-											</viz.data:dimensions>
-											<viz.data:measures>
-												<viz.data:MeasureDefinition name="Hospitals"
-													value="{hospitalModel>totalHospitals}" />
-												<!-- <viz.data:MeasureDefinition name="Beds" -->
-													<!-- value="{hospitalModel>totalBeds}" /> -->
-											</viz.data:measures>
-										</viz.data:FlattenedDataset>
-									</viz:dataset>
-					
-									<viz:feeds>
-										<viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure"
-											values="Hospitals"/>
-										<viz.feeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension"
-											values="State" />
-									</viz:feeds>
-								</viz:VizFrame>
-							</IconTabFilter>
-						</items>
-					</IconTabBar>
-				</headerContainer>
-			</ObjectHeader>
-		</content>
-	</Page>
+							<viz:VizFrame id="idVizChart" vizType="column" width="100%" uiConfig="{applicationSet:'fiori'}">
+    <viz:dataset>
+        <vizData:FlattenedDataset data="{/main}">
+            <vizData:dimensions>
+                <vizData:DimensionDefinition id="_IDPutawayPeriodDimension" name="State" value="{state}"/>
+            </vizData:dimensions>
+            <vizData:measures>
+                <vizData:MeasureDefinition id="_IDPutawayMeasureDefinition1" name="totalhospitals" value="{totalHospitals}"/>
+            </vizData:measures>
+        </vizData:FlattenedDataset>
+    </viz:dataset>
+    <viz:feeds>
+        <vizFeeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure" values="totalhospitals"/>
+        <vizFeeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension" values="State"/>
+    </viz:feeds>
+</viz:VizFrame>
+				</IconTabFilter>
+			</items>
+		</IconTabBar>
+	</headerContainer>
+</ObjectHeader>
+</content>
+</Page>
 </mvc:View>
