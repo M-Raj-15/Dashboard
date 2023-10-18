@@ -1,0 +1,168 @@
+<mvc:View
+	controllerName="com.an.dashboard.controller.View1"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:layout="sap.ui.layout"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data"
+>
+	<Page
+		id="page"
+		title="{i18n>title}"
+		showHeader="false"
+	>
+		<content>
+			<ObjectHeader
+				id="idObjectHeader"
+				title="Total Cases in INDIA"
+				responsive="true"
+				class="sapUiResponsivePadding--header"
+				icon="sap-icon://choropleth-chart"				
+				numberUnit="India"
+				numberState="Warning"
+			>
+				<headerContainer>
+					<IconTabBar
+						id="itb1"
+						selectedKey="key1"
+						upperCase="true"
+						class="sapUiResponsiveContentPadding"
+					>
+						<items>
+							<IconTabFilter
+								key="Regional"
+								icon="sap-icon://world"
+								text="Regional vise Cases"
+							>
+								<GenericTile
+									class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+									header="Andhra"
+									frameType="OneByHalf"
+									subheader="Cases"
+									press="onPressAndhra"
+								>
+									<TileContent
+										unit="INR"
+										footer="Old Data"
+									>
+										<NumericContent
+											scale="L"
+											value="{IconTabModel>/Andhra}"
+											valueColor="Critical"
+											indicator="Up"
+											withMargin="false"
+										/>
+									</TileContent>
+								</GenericTile>
+								<GenericTile
+									class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+									header="Telangana"
+									frameType="OneByHalf"
+									subheader="Cases"
+									press="onPressTelangana"
+								>
+									<TileContent
+										unit="INR"
+										footer="Old Data"
+									>
+										<NumericContent
+											scale="L"
+											value="{IconTabModel>/Telangana}"
+											valueColor="Error"
+											indicator="Up"
+											withMargin="false"
+										/>
+									</TileContent>
+								</GenericTile>
+								<GenericTile
+									class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+									header="TamilNadu"
+									frameType="OneByHalf"
+									subheader="Cases"
+									press="onPressTamilNadu"
+								>
+									<TileContent
+										unit="INR"
+										footer="Old Data"
+									>
+										<NumericContent
+											scale="L"
+											value="{IconTabModel>/TamilNadu}"
+											valueColor="Error"
+											indicator="Down"
+											withMargin="false"
+										/>
+									</TileContent>
+								</GenericTile>
+							</IconTabFilter>
+							<IconTabFilter
+								key="Test"
+								icon="sap-icon://feed"
+								text="Testing Info"
+							>
+								<Table id="idStateTable" items="{testModel>/data}">
+									<columns>
+										<Column>
+											<Text text="day"></Text>
+										</Column>
+										<Column>
+											<Text text="TotalSamplesTested"></Text>
+										</Column>
+										<Column>
+											<Text text="TotalIndividualsTested"></Text>
+										</Column>
+										<Column>
+											<Text text="TotalPositiveCases"></Text>
+										</Column>
+									</columns>
+									<items>
+                                        <ColumnListItem >
+											<cells>
+												<Text text="{testModel>day}"></Text>
+												<Text text="{testModel>totalSamplesTested}"></Text>
+												<Text text="{testModel>totalIndividualsTested}"></Text>
+												<Text text="{testModel>totalPositiveCases}"></Text>
+											</cells>
+										</ColumnListItem>
+									</items>
+								</Table>
+							</IconTabFilter>
+							<IconTabFilter
+								key="Graph"
+								icon="sap-icon://business-objects-experience"
+								text="Graphs Info"
+							>
+								<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
+									height='100%' width="100%" vizType='column'>
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{hospitalModel>/data/regional}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="State"
+													value="{hospitalModel>state}" />
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Hospitals"
+													value="{hospitalModel>totalHospitals}" />
+												<!-- <viz.data:MeasureDefinition name="Beds" -->
+													<!-- value="{hospitalModel>totalBeds}" /> -->
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+					
+									<viz:feeds>
+										<viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure"
+											values="Hospitals"/>
+										<viz.feeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension"
+											values="State" />
+									</viz:feeds>
+								</viz:VizFrame>
+							</IconTabFilter>
+						</items>
+					</IconTabBar>
+				</headerContainer>
+			</ObjectHeader>
+		</content>
+	</Page>
+</mvc:View>
